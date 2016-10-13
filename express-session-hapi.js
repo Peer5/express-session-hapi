@@ -23,10 +23,7 @@ internals.schema = Joi.object({
   cookieName: Joi.string(),
   cookieValuePrefix: Joi.string().default('s:'),
   redirectTo: Joi.string().allow(false),
-  redis: Joi.object().keys({
-    host: Joi.string(),
-    port: Joi.number().default(6379)
-  }),
+  redis: Joi.object(),
   secret: Joi.string(),
   sessionIDPrefix: Joi.string().default('sess:'),
   userProp: Joi.string().default('user'),
@@ -42,7 +39,7 @@ internals.implementation = function (server, options) {
     settings.appendNext = (settings.appendNext ? 'next' : '');
   }
 
-  var redisClient = redis.createClient(settings.redis.port, settings.redis.host);
+  var redisClient = redis.createClient(settings.redis);
 
   function decodeCookieValue(val) {
     val = decodeURIComponent(val).trim();
