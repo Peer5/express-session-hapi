@@ -3,7 +3,7 @@
 var Boom = require('boom');
 var Hoek = require('hoek');
 var Joi = require('joi');
-var redis = require('redis');
+var Redis = require('ioredis');
 var signature = require('cookie-signature');
 
 var internals = {};
@@ -39,7 +39,7 @@ internals.implementation = function (server, options) {
     settings.appendNext = (settings.appendNext ? 'next' : '');
   }
 
-  var redisClient = redis.createClient(settings.redis);
+  var redisClient = new Redis(settings.redis);
 
   function decodeCookieValue(val) {
     val = decodeURIComponent(val).trim();
